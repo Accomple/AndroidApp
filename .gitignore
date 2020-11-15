@@ -1,11 +1,17 @@
- *.iml
-gradle
+*.iml
+*.properties
+gradlew
+gradlew.bat
+*.pro
+
+gradle/
 */gradle
 .gradle/
 */.gradle/
 .idea/
 */.idea/
+build/
+*/build/
 libs/
 */libs/
-*/.gitignore
-*/app/.gitignore
+app/.gitignore
