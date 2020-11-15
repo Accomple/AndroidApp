@@ -36,10 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 response -> {
                     Log.d(TAG,response.toString());
-                    Accommodation[] accommodations = new Gson().fromJson(response.toString(), Accommodation[].class);
-                    Log.d(TAG, String.valueOf(accommodations.length));
-                    recyclerView.setAdapter(new AccommodationListAdapter(getApplicationContext(),accommodations));
-
+                    recyclerView.setAdapter(new AccommodationListAdapter(getApplicationContext(),response));
                 },
                 error -> {
                     Log.d(TAG, error.toString());

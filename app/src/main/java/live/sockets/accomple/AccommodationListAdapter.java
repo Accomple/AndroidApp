@@ -14,11 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 public class AccommodationListAdapter extends RecyclerView.Adapter<AccommodationListAdapter.AccommodationViewHolder> {
-    Accommodation[] accommodations;
+    JSONArray accommodations;
     Context context;
 
-    public AccommodationListAdapter(Context context,Accommodation[] accommodations) {
+    public AccommodationListAdapter(Context context, JSONArray accommodations) {
         this.context = context;
         this.accommodations = accommodations;
     }
@@ -33,18 +39,27 @@ public class AccommodationListAdapter extends RecyclerView.Adapter<Accommodation
 
     @Override
     public void onBindViewHolder(@NonNull AccommodationViewHolder holder, int position) {
-        Accommodation accommodation = accommodations[position];
-        holder.textView.setText(accommodation.getBuildingName());
-        Glide.with(holder.imageView.getContext()).load(Shared.ROOT_URL+accommodation.getDisplayPic()).into(holder.imageView);
-        holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(context,String.valueOf(accommodation.getId()),Toast.LENGTH_SHORT).show();
-        });
+        try {
+            JSONObject accommodation = (JSONObject) accommodations.get(position);
+            holder.textView.setText(accommodation.getString("building_name"));
+            Glide.with(holder.imageView.getContext()).load(Shared.ROOT_URL + accommodation.getString("display_pic")).into(holder.imageView);
+            holder.itemView.setOnClickListener(v -> {
+                try {
+                    Toast.makeText(context, accommodation.getString("id"), Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e){
+
+                }
+            });
+        } catch (JSONException e){
+
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return accommodations.length;
+        return accommodations.length();
     }
 
     public class AccommodationViewHolder extends RecyclerView.ViewHolder {
