@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View navigationHeader;
+    private TextView nameTextView;
+    private TextView verificationStatusTextView;
 
     private boolean exitOnBack = false;
 
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.sideNav);
         navigationHeader = navigationView.getHeaderView(0);
+        nameTextView = navigationHeader.findViewById(R.id.nameTextView);
+        verificationStatusTextView = navigationHeader.findViewById(R.id.verificationStatusTextView);
 
         setupNavigationDrawer();
 
@@ -96,5 +102,15 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(NavDrawer.onNavigationItemSelectedListener());
         navigationHeader.setOnClickListener(NavDrawer.onHeaderSelected());
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        String name = Shared.storage.getString("name","EMPTY");
+        boolean is_verified = Shared.storage.getBoolean("is_verified",false);
+        if(is_verified){
+            verificationStatusTextView.setTextColor(Color.parseColor("#4CAF50"));
+            verificationStatusTextView.setText("Verified");
+        }
+        if(!name.equalsIgnoreCase("EMPTY")){
+            nameTextView.setText(name);
+        }
     }
 }

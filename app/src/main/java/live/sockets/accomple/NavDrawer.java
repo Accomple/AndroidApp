@@ -32,7 +32,7 @@ public abstract class NavDrawer {
             switch (item.getItemId()) {
                 case R.id.accommodations:
                     Log.d(TAG, "accommodations");
-                    Intent intent = new Intent(parent,MainActivity.class);
+                    Intent intent = new Intent(parent, MainActivity.class);
                     parent.startActivity(intent);
                 break;
             }
