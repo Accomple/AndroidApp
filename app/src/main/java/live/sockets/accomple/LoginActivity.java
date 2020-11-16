@@ -23,17 +23,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         skipLink = findViewById(R.id.skipLink);
-
         requestPermissions();
         Shared.storage = getSharedPreferences("live.sockets.notes",MODE_PRIVATE);
+
         String token = Shared.storage.getString("Token","EMPTY");
         if(!token.equalsIgnoreCase("EMPTY")){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
 
-        skipLink = findViewById(R.id.skipLink);
-        skipLink.setOnClickListener(v -> finishAndRemoveTask());
+        addEventListeners();
     }
 
     private void requestPermissions(){
@@ -55,5 +54,12 @@ public class LoginActivity extends AppCompatActivity {
             if(fineLocationPermission != PackageManager.PERMISSION_GRANTED)
                 finishAndRemoveTask();
         }
+    }
+
+    private void addEventListeners(){
+        skipLink.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
     }
 }

@@ -22,6 +22,9 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageView imageView;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private View navigationHeader;
 
     private boolean exitOnBack = false;
 
@@ -35,22 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.menuImageView);
         recyclerView = findViewById(R.id.recyclerView);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.sideNav);
+        navigationHeader = navigationView.getHeaderView(0);
+
+        setupNavigationDrawer();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-        imageView.setOnClickListener(v -> {
-            drawerLayout.openDrawer(GravityCompat.START);
-        });
-        NavigationView navigationView = findViewById(R.id.sideNav);
-        NavDrawer.setNavigationView(navigationView);
-        NavDrawer.setParent(this);
-
-        navigationView.setItemIconTintList(null);
-
-        navigationView.setNavigationItemSelectedListener(NavDrawer.onNavigationItemSelectedListener());
-        View head = navigationView.getHeaderView(0);
-        head.setOnClickListener(NavDrawer.onHeaderSelected());
-
 
         Shared.requestQueue = Volley.newRequestQueue(this);  // this = context
 
@@ -90,5 +84,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void setupNavigationDrawer(){
+        imageView.setOnClickListener(v -> {
+            drawerLayout.openDrawer(GravityCompat.START);
+        });
+        navigationView.setItemIconTintList(null);
+        NavDrawer.setNavigationView(navigationView);
+        NavDrawer.setParent(this);
+        navigationView.setNavigationItemSelectedListener(NavDrawer.onNavigationItemSelectedListener());
+        navigationHeader.setOnClickListener(NavDrawer.onHeaderSelected());
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 }

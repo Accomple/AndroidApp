@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/item1"
-        android:icon="@drawable/info_secondary_48dp"
-        android:title="Alpha"/>
-    <item android:id="@+id/item2"
-        android:icon="@drawable/info_secondary_48dp"
-        android:title="Beta"/>
-    <item android:id="@+id/item3"
-        android:icon="@drawable/info_secondary_48dp"
-        android:title="Gamma"/>
-    <item android:id="@+id/item4"
-        android:icon="@drawable/info_secondary_48dp"
-        android:title="Delta"/>
+    <item android:id="@+id/accommodations"
+        android:icon="@drawable/accommodations_icon_primary"
+        android:title="Accommodations"/>
 
-    <item android:title="others">
+    <item android:id="@+id/booking"
+        android:icon="@drawable/booking_icon_primary"
+        android:title="My Booking"/>
+    <item android:title=" ">
         <menu>
-            <item android:id="@+id/item5"
-                android:icon="@drawable/info_secondary_48dp"
-                android:title="Theta"/>
-            <item android:id="@+id/item6"
-                android:icon="@drawable/info_secondary_48dp"
-                android:title="Phy"/>
+            <item android:id="@+id/contactUS"
+                android:icon="@drawable/contact_us_icon_primary"
+                android:title="Contact Us"/>
+            <item android:id="@+id/terms"
+                android:icon="@drawable/terms_icon_primary"
+                android:title="Terms And Conditions"/>
         </menu>
     </item>
 </menu>

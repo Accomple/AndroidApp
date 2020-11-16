@@ -15,6 +15,7 @@ public abstract class NavDrawer {
 
     protected static Context parent;
     protected static NavigationView navigationView;
+    private static final String TAG = "Debug";
 
     public static void setNavigationView(NavigationView navigationView) {
         NavDrawer.navigationView = navigationView;
@@ -27,12 +28,13 @@ public abstract class NavDrawer {
     protected static NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener(){
         return item -> {
             clearSelection(navigationView.getMenu());
-            item.setChecked(true);
-            if(item.getItemId() == R.id.item1) {
-                Intent intent = new Intent(parent,ProfileActivity.class);
-                parent.startActivity(intent);
-                Toast.makeText(parent,"item1",Toast.LENGTH_SHORT).show();
-                Log.d("TAG","item1");
+
+            switch (item.getItemId()) {
+                case R.id.accommodations:
+                    Log.d(TAG, "accommodations");
+                    Intent intent = new Intent(parent,MainActivity.class);
+                    parent.startActivity(intent);
+                break;
             }
             return true;
         };
