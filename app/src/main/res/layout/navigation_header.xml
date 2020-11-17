@@ -7,7 +7,7 @@
     android:padding="20dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageProfile"
+        android:id="@+id/profilePicImageView"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="4dp"
@@ -26,8 +26,8 @@
         android:layout_marginTop="8dp"
         android:text="Login"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/imageProfile"
-        app:layout_constraintTop_toTopOf="@+id/imageProfile" />
+        app:layout_constraintStart_toEndOf="@+id/profilePicImageView"
+        app:layout_constraintTop_toTopOf="@+id/profilePicImageView" />
 
     <TextView
         android:id="@+id/verificationStatusTextView"

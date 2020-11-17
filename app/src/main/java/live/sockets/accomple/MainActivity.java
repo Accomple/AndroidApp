@@ -16,14 +16,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private ImageView imageView;
+    private ImageView menuImageView;
+    private ImageView profilePicImageView;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View navigationHeader;
@@ -31,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView verificationStatusTextView;
 
     private boolean exitOnBack = false;
-
+    private String token = "EMPTY";
     private final String TAG = "Debug";
 
 
@@ -40,19 +48,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = findViewById(R.id.menuImageView);
+        menuImageView = findViewById(R.id.menuImageView);
         recyclerView = findViewById(R.id.recyclerView);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.sideNav);
         navigationHeader = navigationView.getHeaderView(0);
         nameTextView = navigationHeader.findViewById(R.id.nameTextView);
         verificationStatusTextView = navigationHeader.findViewById(R.id.verificationStatusTextView);
+        profilePicImageView  = navigationHeader.findViewById(R.id.profilePicImageView);
+        token = Shared.storage.getString("token","EMPTY");
 
         setupNavigationDrawer();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Shared.requestQueue = Volley.newRequestQueue(this);  // this = context
+        if(!token.equalsIgnoreCase("EMPTY"))
+            loadProfilePic();
 
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(
@@ -93,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupNavigationDrawer(){
-        imageView.setOnClickListener(v -> {
+        menuImageView.setOnClickListener(v -> {
             drawerLayout.openDrawer(GravityCompat.START);
         });
         navigationView.setItemIconTintList(null);
@@ -113,4 +124,34 @@ public class MainActivity extends AppCompatActivity {
             nameTextView.setText(name);
         }
     }
+
+    private void loadProfilePic(){
+        StringRequest profileRequest = new StringRequest(
+                Request.Method.GET,
+                Shared.ROOT_URL+"/accounts/get_profile/",
+                response -> {
+                    Log.d(TAG, response);
+                    JsonObject jsonObject = new Gson().fromJson(response,JsonObject.class);
+                    try {
+                        String profile_pic = jsonObject.get("profile_pic").getAsString();
+                        Glide.with(this).load(Shared.ROOT_URL+profile_pic).into(profilePicImageView);
+
+                    } catch (UnsupportedOperationException e){
+                        Log.d(TAG, "No Profile Pic");
+                    }
+
+                },
+                error -> Log.d(TAG, String.valueOf(error.networkResponse.statusCode))
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<>();
+                params.put("Authorization", "Token "+token);
+                return params;
+            }
+        };
+
+        Shared.requestQueue.add(profileRequest);
+    }
+
 }

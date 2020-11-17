@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Shared.storage.edit().putString("token",token).apply();
                     Shared.storage.edit().putBoolean("is_owner",is_owner).apply();
-                    Shared.storage.edit().putBoolean("is_verified",is_owner).apply();
+                    Shared.storage.edit().putBoolean("is_verified",is_verified).apply();
                     Shared.storage.edit().putString("name",name).apply();
 
                     Intent intent = new Intent(this, MainActivity.class);
