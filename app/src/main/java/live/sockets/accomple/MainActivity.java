@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 },
-                error -> Log.d(TAG, String.valueOf(error.networkResponse.statusCode))
+                error -> Log.d(TAG, error.toString())
         ){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
