@@ -80,6 +80,13 @@ public class LoginActivity extends AppCompatActivity {
                     Shared.currentLocation = location;
                 } catch (Exception e) {
                     Log.d(TAG, e.toString());
+
+                    String token = Shared.storage.getString("token","EMPTY");
+                    if(!token.equalsIgnoreCase("EMPTY")){
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                    }
+
                 }
             };
 
@@ -88,14 +95,15 @@ public class LoginActivity extends AppCompatActivity {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
         } catch (Exception e){
             e.printStackTrace();
+            String token = Shared.storage.getString("token","EMPTY");
+            if(!token.equalsIgnoreCase("EMPTY")){
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+
         }
 
 
-        String token = Shared.storage.getString("token","EMPTY");
-        if(!token.equalsIgnoreCase("EMPTY")){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
 
     }
 
@@ -183,9 +191,21 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject postOffice = response.getJSONObject(0).getJSONArray("PostOffice").getJSONObject(0);
                         Shared.currentCity = postOffice.getString("District");
                         Log.d(TAG, Shared.currentCity);
+
+                        String token = Shared.storage.getString("token","EMPTY");
+                        if(!token.equalsIgnoreCase("EMPTY")){
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                        }
+
                     } catch (Exception e) {
                         Shared.currentCity = "Pune";
                         e.printStackTrace();
+                        String token = Shared.storage.getString("token","EMPTY");
+                        if(!token.equalsIgnoreCase("EMPTY")){
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                        }
                     }
 
                 },

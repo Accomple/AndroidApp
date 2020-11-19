@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         double lat = Shared.currentLocation.getLatitude();
         double lng = Shared.currentLocation.getLongitude();
+        Log.d(TAG, Shared.currentCity);
         Log.d(TAG, lat+","+lng);
         JsonArrayRequest getRequest = new JsonArrayRequest(
                 Request.Method.GET,
