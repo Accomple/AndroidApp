@@ -8,6 +8,11 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -16,12 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
@@ -34,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private int readStoragePermission;
     private int fineLocationPermission;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +65,38 @@ public class LoginActivity extends AppCompatActivity {
 
         requestPermissions();
 
+        addEventListeners();
+
+        Shared.currentCity = "Pune";
+        Shared.currentLocation = new Location(LocationManager.GPS_PROVIDER);
+        Shared.currentLocation.setLatitude(18.5247663);
+        Shared.currentLocation.setLongitude(73.7927557);
+        try {
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            locationListener = location -> {
+                try {
+                    Log.d(TAG, String.valueOf(location));
+                    setCurrentCity(location);
+                    Shared.currentLocation = location;
+                } catch (Exception e) {
+                    Log.d(TAG, e.toString());
+                }
+            };
+
+
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         String token = Shared.storage.getString("token","EMPTY");
         if(!token.equalsIgnoreCase("EMPTY")){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
 
-        addEventListeners();
     }
 
     private void requestPermissions(){
@@ -128,5 +167,31 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         Shared.requestQueue.add(loginRequest);
+    }
+
+    private void setCurrentCity(Location location) throws Exception{
+        Geocoder geocoder = new Geocoder(this,Locale.getDefault());
+        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+        String postalCode = addresses.get(0).getPostalCode();
+
+        JsonArrayRequest getRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                "https://api.postalpincode.in/pincode/"+postalCode,
+                null,
+                response -> {
+                    try {
+                        JSONObject postOffice = response.getJSONObject(0).getJSONArray("PostOffice").getJSONObject(0);
+                        Shared.currentCity = postOffice.getString("District");
+                        Log.d(TAG, Shared.currentCity);
+                    } catch (Exception e) {
+                        Shared.currentCity = "Pune";
+                        e.printStackTrace();
+                    }
+
+                },
+                error -> Log.d(TAG, error.toString())
+        );
+
+        Shared.requestQueue.add(getRequest);
     }
 }

@@ -1,6 +1,7 @@
 package live.sockets.accomple;
 
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -13,4 +14,7 @@ public abstract class Shared {
 //    protected static final String ROOT_URL = "http://10.42.0.1";
     protected static RequestQueue requestQueue;
     protected static SharedPreferences storage;
+
+    protected static String currentCity = null;
+    protected static Location currentLocation = null;
 }

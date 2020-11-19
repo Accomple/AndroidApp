@@ -65,22 +65,20 @@ public class MainActivity extends AppCompatActivity {
         if(!token.equalsIgnoreCase("EMPTY"))
             loadProfilePic();
 
-        // prepare the Request
+        double lat = Shared.currentLocation.getLatitude();
+        double lng = Shared.currentLocation.getLongitude();
+        Log.d(TAG, lat+","+lng);
         JsonArrayRequest getRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                Shared.ROOT_URL+"/accommodations/",
+                String.format(Shared.ROOT_URL+"/accommodations/city=%s&near=%s,%s",Shared.currentCity,lat,lng),
                 null,
                 response -> {
                     Log.d(TAG,response.toString());
                     recyclerView.setAdapter(new AccommodationListAdapter(getApplicationContext(),response));
                 },
-                error -> {
-                    Log.d(TAG, error.toString());
-                }
+                error -> Log.d(TAG, error.toString())
         );
 
-
-        // add it to the RequestQueue
         Shared.requestQueue.add(getRequest);
     }
 
