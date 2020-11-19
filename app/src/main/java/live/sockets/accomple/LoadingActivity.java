@@ -66,10 +66,6 @@ public class LoadingActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.loading).into(loadingImageView);
 
         requestPermissions();
-
-        if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
-
     }
 
     private void redirect(){
@@ -89,7 +85,10 @@ public class LoadingActivity extends AppCompatActivity {
 
         if (readStoragePermission != PackageManager.PERMISSION_GRANTED || fineLocationPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION },73);
-        }else Log.d(TAG, "All Permissions Granted");
+        }else{
+            Log.d(TAG, "All Permissions Acquired");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5000, locationListener);
+        }
     }
 
     @Override
@@ -102,7 +101,7 @@ public class LoadingActivity extends AppCompatActivity {
             if(fineLocationPermission != PackageManager.PERMISSION_GRANTED)
                 finishAndRemoveTask();
             if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5000, locationListener);
         }
     }
 

@@ -56,7 +56,15 @@ public abstract class NavDrawer {
     protected static View.OnClickListener onHeaderSelected(){
         return v -> {
             clearSelection(navigationView.getMenu());
-            Toast.makeText(parent,"header",Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "header");
+            String name = Shared.storage.getString("name","EMPTY");
+            Intent intent;
+            if(name.equalsIgnoreCase("EMPTY"))
+                intent = new Intent(parent, LoginActivity.class);
+            else
+                intent = new Intent(parent, AccountActivity.class);
+
+            parent.startActivity(intent);
         };
     }
 }

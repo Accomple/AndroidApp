@@ -1,24 +1,14 @@
 package live.sockets.accomple;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-
-import live.sockets.accomple.R;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -26,7 +16,7 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        ImageView imageView = findViewById(R.id.menuImageView);
+        ImageView imageView = findViewById(R.id.backImageView);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         imageView.setOnClickListener(v -> {
             drawerLayout.openDrawer(GravityCompat.START);

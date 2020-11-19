@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +18,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        ImageView imageView = findViewById(R.id.menuImageView);
+        ImageView imageView = findViewById(R.id.backImageView);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         imageView.setOnClickListener(v -> {
             drawerLayout.openDrawer(GravityCompat.START);

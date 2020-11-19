@@ -80,11 +80,15 @@ public class LoginActivity extends AppCompatActivity {
                     JsonObject jsonObject = new Gson().fromJson(response,JsonObject.class);
                     String token = jsonObject.get("token").getAsString();
                     boolean is_owner = Boolean.parseBoolean(jsonObject.get("is_owner").getAsString());
+                    boolean is_superuser = Boolean.parseBoolean(jsonObject.get("is_superuser").getAsString());
                     boolean is_verified = Boolean.parseBoolean(jsonObject.get("is_verified").getAsString());
                     String name = jsonObject.get("name").getAsString();
 
+                    if(is_owner || is_superuser){
+                        Toast.makeText(getApplicationContext(),"Invalid User Type\n Kindly use Web Portal",Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Shared.storage.edit().putString("token",token).apply();
-                    Shared.storage.edit().putBoolean("is_owner",is_owner).apply();
                     Shared.storage.edit().putBoolean("is_verified",is_verified).apply();
                     Shared.storage.edit().putString("name",name).apply();
 

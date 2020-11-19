@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private View navigationHeader;
     private TextView nameTextView;
     private TextView verificationStatusTextView;
+    private TextView notFoundTextView;
 
     private boolean exitOnBack = false;
     private String token = "EMPTY";
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        menuImageView = findViewById(R.id.menuImageView);
+        notFoundTextView = findViewById(R.id.notFoundTextView);
+        menuImageView = findViewById(R.id.backImageView);
         recyclerView = findViewById(R.id.recyclerView);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.sideNav);
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         profilePicImageView  = navigationHeader.findViewById(R.id.profilePicImageView);
         token = Shared.storage.getString("token","EMPTY");
 
+        notFoundTextView.animate().translationYBy(-10000).setDuration(0);
         setupNavigationDrawer();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -75,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 response -> {
                     Log.d(TAG,response.toString());
+                    if(response.length() == 0)
+                        notFoundTextView.animate().translationYBy(10000).setDuration(0);
                     recyclerView.setAdapter(new AccommodationListAdapter(getApplicationContext(),response));
                 },
                 error -> Log.d(TAG, error.toString())
