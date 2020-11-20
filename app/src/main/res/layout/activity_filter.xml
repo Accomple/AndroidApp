@@ -133,7 +133,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6">
+            app:layout_constraintTop_toBottomOf="@+id/nearMeTextView">
 
             <Button
                 android:id="@+id/clearButton"
@@ -212,7 +212,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/nearMeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -228,9 +228,9 @@
             android:layout_width="62dp"
             android:layout_height="32dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView6"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toTopOf="@+id/textView6" />
+            app:layout_constraintBottom_toBottomOf="@+id/nearMeTextView"
+            app:layout_constraintStart_toEndOf="@+id/nearMeTextView"
+            app:layout_constraintTop_toTopOf="@+id/nearMeTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

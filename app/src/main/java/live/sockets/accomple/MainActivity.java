@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button filterButton;
 
     private boolean exitOnBack = false;
+    private String urlExtension = null;
     private String token = "EMPTY";
     private final String TAG = "Debug";
 
@@ -71,13 +72,21 @@ public class MainActivity extends AppCompatActivity {
         if(!token.equalsIgnoreCase("EMPTY"))
             loadProfilePic();
 
+        Intent intent = getIntent();
+        urlExtension = intent.getStringExtra("urlExtension");
+
         double lat = Shared.currentLocation.getLatitude();
         double lng = Shared.currentLocation.getLongitude();
         Log.d(TAG, Shared.currentCity);
         Log.d(TAG, lat+","+lng);
+
+        if(urlExtension == null)
+            urlExtension = String.format("city=%s&near=%s,%s",Shared.currentCity,lat,lng);
+
+        Log.d(TAG, urlExtension);
         JsonArrayRequest getRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                String.format(Shared.ROOT_URL+"/accommodations/city=%s&near=%s,%s",Shared.currentCity,lat,lng),
+                Shared.ROOT_URL+"/accommodations/"+urlExtension+"/",
                 null,
                 response -> {
                     Log.d(TAG,response.toString());
