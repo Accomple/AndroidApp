@@ -3,6 +3,7 @@ package live.sockets.accomple;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,6 +17,15 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,18 +78,9 @@ public class FilterActivity extends AppCompatActivity {
         rentSeekBar.setMax(MAX_RENT);
         rentSeekBar.setProgress(MAX_RENT);
 
-        cities.add("Pune");
-        cities.add("Mumbai");
-        cities.add("Chennai");
-        cities.add("Delhi");
-        cities.add("Bangalore");
+        nearMeCheckBox.setEnabled(false);
 
-        if(!cities.contains(Shared.currentCity))
-            nearMeCheckBox.setEnabled(false);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, cities);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySpinner.setAdapter(adapter);
+        setupCitySpinner();
 
         addEventListeners();
     }
@@ -183,7 +184,7 @@ public class FilterActivity extends AppCompatActivity {
             filters.put("occupancy","4");
 
         String search = searchBar.getText().toString();
-        if(search != null && !search.trim().isEmpty())
+        if(!search.trim().isEmpty())
             filters.put("search",search);
 
         String urlExtension = "";
@@ -191,5 +192,29 @@ public class FilterActivity extends AppCompatActivity {
             urlExtension += key+"="+filters.get(key)+"&";
 
         return urlExtension.substring(0, urlExtension.length()-1);
+    }
+
+    private void setupCitySpinner(){
+        StringRequest cityRequest = new StringRequest(
+                Request.Method.GET,
+                Shared.ROOT_URL+"/active_cities/names",
+                response -> {
+                    Log.d(TAG, response);
+                    JsonArray jsonArray = new Gson().fromJson(response,JsonArray.class);
+                    for(JsonElement element : jsonArray)
+                        cities.add(element.getAsString());
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, cities);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    citySpinner.setAdapter(adapter);
+
+                    if(cities.contains(Shared.currentCity)) {
+                        nearMeCheckBox.setEnabled(true);
+                        citySpinner.setSelection(cities.indexOf(Shared.currentCity));
+                    }
+                },
+                error -> Log.d(TAG, error.toString())
+        );
+        Shared.requestQueue.add(cityRequest);
     }
 }
