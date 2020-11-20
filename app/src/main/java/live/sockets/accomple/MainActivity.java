@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView nameTextView;
     private TextView verificationStatusTextView;
     private TextView notFoundTextView;
+    private Button filterButton;
 
     private boolean exitOnBack = false;
     private String token = "EMPTY";
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        filterButton = findViewById(R.id.filterButton);
         notFoundTextView = findViewById(R.id.notFoundTextView);
         menuImageView = findViewById(R.id.backImageView);
         recyclerView = findViewById(R.id.recyclerView);
@@ -86,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
         );
 
         Shared.requestQueue.add(getRequest);
+
+        addEventListeners();
+    }
+
+    private void addEventListeners(){
+
+        filterButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this,FilterActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
