@@ -32,6 +32,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageView menuImageView;
+    private ImageView bookmarksImageView;
     private ImageView profilePicImageView;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         filterButton = findViewById(R.id.filterButton);
         notFoundTextView = findViewById(R.id.notFoundTextView);
-        menuImageView = findViewById(R.id.backImageView);
+        menuImageView = findViewById(R.id.menuImageView);
+        bookmarksImageView = findViewById(R.id.bookmarksImageView);
         recyclerView = findViewById(R.id.recyclerView);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.sideNav);
@@ -106,6 +108,15 @@ public class MainActivity extends AppCompatActivity {
 
         filterButton.setOnClickListener(v -> {
             Intent intent = new Intent(this,FilterActivity.class);
+            startActivity(intent);
+        });
+
+        bookmarksImageView.setOnClickListener(v -> {
+            Intent intent;
+            if(token.equalsIgnoreCase("EMPTY"))
+                intent = new Intent(this, LoginActivity.class);
+            else
+                intent = new Intent(this, BookmarkActivity.class);
             startActivity(intent);
         });
     }

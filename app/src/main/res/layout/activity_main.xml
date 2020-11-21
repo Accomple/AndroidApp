@@ -26,7 +26,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/menuImageView2"
+                    android:id="@+id/bookmarksImageView"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginEnd="16dp"
@@ -37,7 +37,7 @@
                     app:srcCompat="@drawable/baseline_bookmarks_white_48dp" />
 
                 <ImageView
-                    android:id="@+id/backImageView"
+                    android:id="@+id/menuImageView"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="16dp"

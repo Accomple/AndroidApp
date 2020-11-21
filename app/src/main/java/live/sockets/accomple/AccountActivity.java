@@ -89,6 +89,15 @@ public class AccountActivity extends AppCompatActivity {
             Intent intent = new Intent(this,ProfileActivity.class);
             startActivity(intent);
         });
+
+        bookmarksLayout.setOnClickListener(v -> {
+            Intent intent;
+            if(token.equalsIgnoreCase("EMPTY"))
+                intent = new Intent(this, LoginActivity.class);
+            else
+                intent = new Intent(this, BookmarkActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void requestAndRenderProfileDetails(){
