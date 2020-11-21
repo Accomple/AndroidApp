@@ -180,6 +180,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Shared.ROOT_URL + "/accounts/profile/update/user=me/",
                 response -> {
                     Log.d(TAG, new String(response.data));
+                    Shared.storage.edit().putString("name",first_name+" "+last_name).apply();
                     Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(this,MainActivity.class);
                     startActivity(intent);
@@ -188,6 +189,8 @@ public class ProfileActivity extends AppCompatActivity {
                     Log.d(TAG,new String(error.networkResponse.data));
                     if(error.networkResponse.statusCode == 400)
                         Toast.makeText(getApplicationContext(),"Invalid Fields for Profile",Toast.LENGTH_LONG).show();
+                    else if (error.networkResponse.statusCode == 413)
+                        Toast.makeText(getApplicationContext(),"Request Entity Too Large",Toast.LENGTH_LONG).show();
                     else
                         Toast.makeText(getApplicationContext(),"Something Went Wrong!",Toast.LENGTH_LONG).show();
                 }
