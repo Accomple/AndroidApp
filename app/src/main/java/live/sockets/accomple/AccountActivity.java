@@ -35,6 +35,7 @@ public class AccountActivity extends AppCompatActivity {
     private ConstraintLayout profileLayout;
     private ConstraintLayout activeBookingLayout;
     private ConstraintLayout bookmarksLayout;
+    private ConstraintLayout changePasswordLayout;
 
     private final String TAG = "Debug";
     private String token = "EMPTY";
@@ -50,6 +51,7 @@ public class AccountActivity extends AppCompatActivity {
         profileLayout = findViewById(R.id.profileLayout);
         activeBookingLayout = findViewById(R.id.activeBookingLayout);
         bookmarksLayout = findViewById(R.id.bookmarksLayout);
+        changePasswordLayout = findViewById(R.id.changePasswordLayout);
         backImageView = findViewById(R.id.backImageView);
         logoutButton = findViewById(R.id.logoutButton);
         token = Shared.storage.getString("token","EMPTY");
@@ -80,6 +82,11 @@ public class AccountActivity extends AppCompatActivity {
             };
             Shared.requestQueue.add(logoutRequest);
             Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        });
+
+        profileLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(this,ProfileActivity.class);
             startActivity(intent);
         });
     }

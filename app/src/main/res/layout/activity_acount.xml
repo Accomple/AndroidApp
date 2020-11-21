@@ -11,6 +11,42 @@
         android:elevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/changePasswordLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_border"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bookmarksLayout">
+
+            <TextView
+                android:id="@+id/changePasswordTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:elevation="0dp"
+                android:padding="16dp"
+                android:paddingStart="32dp"
+                android:text="Change Password"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/chevron_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bookmarksLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -210,7 +246,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bookmarksLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/changePasswordLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

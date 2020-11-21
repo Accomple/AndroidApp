@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Accomple"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FilterActivity"></activity>
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".FilterActivity" />
         <activity android:name=".AccountActivity" />
         <activity android:name=".LoadingActivity">
             <intent-filter>
@@ -25,7 +26,6 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".TestActivity" />
     </application>
 
