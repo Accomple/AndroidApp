@@ -1,7 +1,6 @@
 package live.sockets.accomple;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -134,7 +131,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.Acco
 
         public AccommodationViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.buildingImageView);
             genderLabelImageView = itemView.findViewById(R.id.genderLabelImageView);
             buildingNameTextView = itemView.findViewById(R.id.bulidingNameTextView);
             areaTextView = itemView.findViewById(R.id.areaTextView);

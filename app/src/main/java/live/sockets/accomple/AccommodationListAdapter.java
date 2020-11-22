@@ -1,7 +1,6 @@
 package live.sockets.accomple;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class AccommodationListAdapter extends RecyclerView.Adapter<AccommodationListAdapter.AccommodationViewHolder> {
@@ -96,7 +93,7 @@ public class AccommodationListAdapter extends RecyclerView.Adapter<Accommodation
 
         public AccommodationViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.buildingImageView);
             genderLabelImageView = itemView.findViewById(R.id.genderLabelImageView);
             buildingNameTextView = itemView.findViewById(R.id.bulidingNameTextView);
             areaTextView = itemView.findViewById(R.id.areaTextView);

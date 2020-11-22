@@ -28,11 +28,21 @@ public abstract class NavDrawer {
     protected static NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener(){
         return item -> {
             clearSelection(navigationView.getMenu());
-
+            Intent intent;
             switch (item.getItemId()) {
                 case R.id.accommodations:
                     Log.d(TAG, "accommodations");
-                    Intent intent = new Intent(parent, MainActivity.class);
+                    intent = new Intent(parent, MainActivity.class);
+                    parent.startActivity(intent);
+                break;
+
+                case R.id.booking:
+                    Log.d(TAG, "booking");
+                    String token = Shared.storage.getString("token","EMPTY");
+                    if(token.equalsIgnoreCase("EMPTY"))
+                        intent = new Intent(parent, LoginActivity.class);
+                    else
+                        intent = new Intent(parent, BookingActivity.class);
                     parent.startActivity(intent);
                 break;
             }

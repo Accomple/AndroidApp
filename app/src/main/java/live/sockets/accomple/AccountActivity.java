@@ -98,6 +98,15 @@ public class AccountActivity extends AppCompatActivity {
                 intent = new Intent(this, BookmarkActivity.class);
             startActivity(intent);
         });
+
+        activeBookingLayout.setOnClickListener(v -> {
+            Intent intent;
+            if(token.equalsIgnoreCase("EMPTY"))
+                intent = new Intent(this, LoginActivity.class);
+            else
+                intent = new Intent(this, BookingActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void requestAndRenderProfileDetails(){
