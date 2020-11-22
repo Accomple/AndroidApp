@@ -196,7 +196,7 @@ public class BookingActivity extends AppCompatActivity {
                 Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:"+email));
                 startActivity(intent);
             }catch(ActivityNotFoundException e){
-                Toast.makeText(this,"Couldn't Launch Gmail",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Couldn't Launch Gmail App",Toast.LENGTH_LONG).show();
             }
         });
     }
