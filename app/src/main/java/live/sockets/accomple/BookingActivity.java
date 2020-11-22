@@ -4,7 +4,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -178,6 +181,23 @@ public class BookingActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", (dialog, which) -> deleteBooking())
                     .setNegativeButton("No",null)
                     .show();
+        });
+
+        ownerContactTextView.setOnClickListener(v -> {
+            String contact = ownerContactTextView.getText().toString();
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:"+contact));
+            startActivity(intent);
+        });
+
+        ownerEmailTextView.setOnClickListener(v -> {
+            try{
+                String email = ownerEmailTextView.getText().toString();
+                Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:"+email));
+                startActivity(intent);
+            }catch(ActivityNotFoundException e){
+                Toast.makeText(this,"Couldn't Launch Gmail",Toast.LENGTH_LONG).show();
+            }
         });
     }
 
