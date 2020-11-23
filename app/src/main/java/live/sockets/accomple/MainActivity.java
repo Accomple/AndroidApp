@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private Button filterButton;
 
     private boolean exitOnBack = false;
+    private String name = "Login";
+    private boolean is_verified = false;
     private String urlExtension = null;
     private String token = "EMPTY";
     private final String TAG = "Debug";
@@ -62,17 +64,19 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.sideNav);
         navigationHeader = navigationView.getHeaderView(0);
         nameTextView = navigationHeader.findViewById(R.id.nameTextView);
+
         verificationStatusTextView = navigationHeader.findViewById(R.id.verificationStatusTextView);
         profilePicImageView  = navigationHeader.findViewById(R.id.profilePicImageView);
         token = Shared.storage.getString("token","EMPTY");
 
         notFoundTextView.animate().translationYBy(-10000).setDuration(0);
-        setupNavigationDrawer();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if(!token.equalsIgnoreCase("EMPTY"))
-            loadProfilePic();
+            loadProfile();
+
+        setupNavigationDrawer();
 
         Intent intent = getIntent();
         urlExtension = intent.getStringExtra("urlExtension");
@@ -149,10 +153,11 @@ public class MainActivity extends AppCompatActivity {
         NavDrawer.setParent(this);
         navigationView.setNavigationItemSelectedListener(NavDrawer.onNavigationItemSelectedListener());
         navigationHeader.setOnClickListener(NavDrawer.onHeaderSelected());
+        verificationStatusTextView.setOnClickListener(NavDrawer.onVerificationStatusClicked());
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        String name = Shared.storage.getString("name","EMPTY");
-        boolean is_verified = Shared.storage.getBoolean("is_verified",false);
+        name = Shared.storage.getString("name","EMPTY");
+        is_verified = Shared.storage.getBoolean("is_verified",false);
         if(is_verified){
             verificationStatusTextView.setTextColor(Color.parseColor("#4CAF50"));
             verificationStatusTextView.setText("Verified");
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadProfilePic(){
+    private void loadProfile(){
         StringRequest profileRequest = new StringRequest(
                 Request.Method.GET,
                 Shared.ROOT_URL+"/accounts/get_profile/",
@@ -171,8 +176,18 @@ public class MainActivity extends AppCompatActivity {
                     JsonObject jsonObject = new Gson().fromJson(response,JsonObject.class);
                     try {
                         String profile_pic = jsonObject.get("profile_pic").getAsString();
+                        name = jsonObject.get("first_name").getAsString()+" "+jsonObject.get("last_name").getAsString();
+                        is_verified = jsonObject.get("is_verified").getAsBoolean();
+                        Shared.storage.edit().putString("name",name).apply();
+                        Shared.storage.edit().putBoolean("is_verified",is_verified).apply();
                         Glide.with(this).load(Shared.ROOT_URL+profile_pic).into(profilePicImageView);
-
+                        if(is_verified){
+                            verificationStatusTextView.setTextColor(Color.parseColor("#4CAF50"));
+                            verificationStatusTextView.setText("Verified");
+                        }
+                        if(!name.equalsIgnoreCase("EMPTY")){
+                            nameTextView.setText(name);
+                        }
                     } catch (UnsupportedOperationException e){
                         Log.d(TAG, "No Profile Pic");
                     }

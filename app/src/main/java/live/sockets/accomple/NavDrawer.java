@@ -77,4 +77,24 @@ public abstract class NavDrawer {
             parent.startActivity(intent);
         };
     }
+
+    protected static View.OnClickListener onVerificationStatusClicked(){
+        return v -> {
+            clearSelection(navigationView.getMenu());
+            String token = Shared.storage.getString("token","EMPTY");
+            boolean is_verified = Shared.storage.getBoolean("is_verified",false);
+            if (token.equalsIgnoreCase("EMPTY")){
+                Intent intent = new Intent(parent, LoginActivity.class);
+                parent.startActivity(intent);
+            } else {
+                if(is_verified){
+                    Toast.makeText(parent,"Verified",Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(parent, VerificationActivity.class);
+                    parent.startActivity(intent);
+                }
+            }
+
+        };
+    }
 }
