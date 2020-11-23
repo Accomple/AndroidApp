@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Accomple"
         android:usesCleartextTraffic="true">
-        <activity android:name=".BookingActivity"></activity>
+        <activity android:name=".UpdatePasswordActivity"></activity>
+        <activity android:name=".BookingActivity" />
         <activity android:name=".BookmarkActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".FilterActivity" />

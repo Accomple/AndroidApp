@@ -107,6 +107,11 @@ public class AccountActivity extends AppCompatActivity {
                 intent = new Intent(this, BookingActivity.class);
             startActivity(intent);
         });
+
+        changePasswordLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(this, UpdatePasswordActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void requestAndRenderProfileDetails(){
