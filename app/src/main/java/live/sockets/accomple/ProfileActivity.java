@@ -89,8 +89,13 @@ public class ProfileActivity extends AppCompatActivity {
                     String last_name = jsonObject.get("last_name").getAsString();
                     String phone_number = jsonObject.get("phone_number").getAsString();
                     String date_of_birth = jsonObject.get("date_of_birth").getAsString();
-                    String profile_pic = jsonObject.get("profile_pic").getAsString();
-
+                    String profile_pic = "";
+                    try {
+                        profile_pic = jsonObject.get("profile_pic").getAsString();
+                    }catch (Exception e){
+                        profile_pic = "/media/profile_pics/profile_pic_guard.png";
+                        Log.d(TAG, e.toString());
+                    }
                     emailEditField.setText(email);
                     firstNameEditField.setText(first_name);
                     lastNameEditField.setText(last_name);
@@ -186,13 +191,19 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent);
                 },
                 error -> {
-                    Log.d(TAG,new String(error.networkResponse.data));
-                    if(error.networkResponse.statusCode == 400)
-                        Toast.makeText(getApplicationContext(),"Invalid Fields for Profile",Toast.LENGTH_LONG).show();
-                    else if (error.networkResponse.statusCode == 413)
-                        Toast.makeText(getApplicationContext(),"Request Entity Too Large",Toast.LENGTH_LONG).show();
-                    else
-                        Toast.makeText(getApplicationContext(),"Something Went Wrong!",Toast.LENGTH_LONG).show();
+                    try {
+                        Log.d(TAG, new String(error.networkResponse.data));
+                        if (error.networkResponse.statusCode == 400)
+                            Toast.makeText(getApplicationContext(), "Invalid Fields for Profile", Toast.LENGTH_LONG).show();
+                        else if (error.networkResponse.statusCode == 413)
+                            Toast.makeText(getApplicationContext(), "Request Entity Too Large", Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(getApplicationContext(), "Something Went Wrong!", Toast.LENGTH_LONG).show();
+                    }catch (Exception ignore){
+                        Toast.makeText(getApplicationContext(), "Slow Network Connection", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(this,MainActivity.class);
+                        startActivity(intent);
+                    }
                 }
         ){
             @Override

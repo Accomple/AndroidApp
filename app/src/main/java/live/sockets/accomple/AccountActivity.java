@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -112,6 +113,22 @@ public class AccountActivity extends AppCompatActivity {
             Intent intent = new Intent(this, UpdatePasswordActivity.class);
             startActivity(intent);
         });
+
+        statusTextView.setOnClickListener(v -> {
+            token = Shared.storage.getString("token","EMPTY");
+            boolean is_verified = Shared.storage.getBoolean("is_verified",false);
+            if (token.equalsIgnoreCase("EMPTY")){
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                if(is_verified){
+                    Toast.makeText(this,"Verified",Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(this, VerificationActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void requestAndRenderProfileDetails(){
@@ -125,7 +142,13 @@ public class AccountActivity extends AppCompatActivity {
                     String first_name = jsonObject.get("first_name").getAsString();
                     String last_name = jsonObject.get("last_name").getAsString();
                     String name = first_name+" "+last_name;
-                    String profile_pic = jsonObject.get("profile_pic").getAsString();
+                    String profile_pic = "";
+                    try {
+                        profile_pic = jsonObject.get("profile_pic").getAsString();
+                    }catch (Exception e){
+                        profile_pic = "/media/profile_pics/profile_pic_guard.png";
+                        Log.d(TAG, e.toString());
+                    }
 
                     Shared.storage.edit().putBoolean("is_verified",is_verified).apply();
                     Shared.storage.edit().putString("name",name).apply();

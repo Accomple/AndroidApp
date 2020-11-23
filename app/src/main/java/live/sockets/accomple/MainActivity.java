@@ -175,7 +175,13 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, response);
                     JsonObject jsonObject = new Gson().fromJson(response,JsonObject.class);
                     try {
-                        String profile_pic = jsonObject.get("profile_pic").getAsString();
+                        String profile_pic = "";
+                        try {
+                            profile_pic = jsonObject.get("profile_pic").getAsString();
+                        }catch (Exception e){
+                            profile_pic = "/media/profile_pics/profile_pic_guard.png";
+                            Log.d(TAG, e.toString());
+                        }
                         name = jsonObject.get("first_name").getAsString()+" "+jsonObject.get("last_name").getAsString();
                         is_verified = jsonObject.get("is_verified").getAsBoolean();
                         Shared.storage.edit().putString("name",name).apply();
