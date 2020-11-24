@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.graphics.text.LineBreaker;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -33,11 +35,13 @@ import java.util.Map;
 public class BuildingDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ImageView favouriteImageView;
     private ImageView backImageView;
+    private ImageView toggleAboutImageView;
     private RecyclerView photoRecyclerView;
     private LinearLayout layoutToolbar;
     private MapView mapView;
     private TextView genderTextView;
     private TextView titleTextView;
+    private TextView aboutTextView;
 
     private GoogleMap map;
     private final String TAG = "Debug";
@@ -45,6 +49,7 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
     private final int MALE_SHADE = Color.parseColor("#673AB7");
     private final int FEMALE_SHADE = Color.parseColor("#F05A78");
     private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC3Z1BJHsA3nuLp2ttSbZwrZmAPDJnZcBM";
+    private boolean toggledAbout = false;
     private String id;
     private String token;
 
@@ -58,14 +63,23 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
         titleTextView = findViewById(R.id.titleTextView);
         favouriteImageView = findViewById(R.id.favouriteImageView);
         photoRecyclerView = findViewById(R.id.photoRecyclerView);
+        aboutTextView = findViewById(R.id.aboutTextView);
+
         backImageView = findViewById(R.id.backImageView);
+        toggleAboutImageView = findViewById(R.id.toggleAboutImageView);
         token = Shared.storage.getString("token","EMPTY");
+
+        toggleAboutImageView.setImageResource(R.drawable.keyboard_arrow_up);
+        aboutTextView.setText(null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            aboutTextView.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+        }
 
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         }
-        mapView = (MapView) findViewById(R.id.mapView);
+        mapView = findViewById(R.id.mapView);
         mapView.onCreate(mapViewBundle);
 
         mapView.getMapAsync(this);
@@ -142,6 +156,17 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
         });
 
         backImageView.setOnClickListener(v -> finish());
+
+        toggleAboutImageView.setOnClickListener(v -> {
+            toggledAbout = !toggledAbout;
+            if(toggledAbout) {
+                toggleAboutImageView.setImageResource(R.drawable.keyboard_arrow_down);
+                aboutTextView.setText(R.string.about_text);
+            } else {
+                toggleAboutImageView.setImageResource(R.drawable.keyboard_arrow_up);
+                aboutTextView.setText(null);
+            }
+        });
     }
 
     private void setShade(String genderLabel){
