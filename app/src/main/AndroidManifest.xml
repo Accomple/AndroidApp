@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Accomple"
         android:usesCleartextTraffic="true">
-        <activity android:name=".VerificationActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC3Z1BJHsA3nuLp2ttSbZwrZmAPDJnZcBM" />
+        <activity android:name=".WebViewActivity"></activity>
+        <activity android:name=".BuildingDetailActivity" />
+        <activity android:name=".VerificationActivity" />
         <activity android:name=".UpdatePasswordActivity" />
         <activity android:name=".BookingActivity" />
         <activity android:name=".BookmarkActivity" />

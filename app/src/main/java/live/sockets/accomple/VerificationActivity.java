@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class VerificationActivity extends AppCompatActivity {
     private TextView messageTextView;
     private TextView countDownTextView;
     private TextView instructionTextView;
+    private ImageView backImageView;
 
     private final String TAG = "Debug";
     private String token = "EMPTY";
@@ -62,6 +64,7 @@ public class VerificationActivity extends AppCompatActivity {
         countDownTextView = findViewById(R.id.countDownTextView);
         instructionTextView = findViewById(R.id.instructionTextView);
         submitButton = findViewById(R.id.submitButton);
+        backImageView = findViewById(R.id.backImageView);
         token = Shared.storage.getString("token","EMPTY");
 
         instructionTextView.setText(null);
@@ -213,6 +216,9 @@ public class VerificationActivity extends AppCompatActivity {
         });
 
         resendTextView.setOnClickListener(v -> resend());
+
+        backImageView.setOnClickListener(v -> finish());
+
     }
 
     private void requestAndRender(){
