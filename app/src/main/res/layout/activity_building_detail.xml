@@ -186,7 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="AVAILABLE OCCUPANCIES"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -198,7 +198,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:text="A ROOM AS SPECIAL AS YOU"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -228,46 +228,46 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/streetTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="street_name"
                 app:layout_constraintStart_toStartOf="@+id/mapView"
                 app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/areaTextView0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="area_name"
-                app:layout_constraintStart_toStartOf="@+id/textView22"
-                app:layout_constraintTop_toBottomOf="@+id/textView22" />
+                app:layout_constraintStart_toStartOf="@+id/streetTextView"
+                app:layout_constraintTop_toBottomOf="@+id/streetTextView" />
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/landmarkTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Near landmark_name"
-                app:layout_constraintStart_toStartOf="@+id/textView23"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintStart_toStartOf="@+id/areaTextView0"
+                app:layout_constraintTop_toBottomOf="@+id/areaTextView0" />
 
             <TextView
-                android:id="@+id/textView25"
+                android:id="@+id/cityTextView0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="city_name, pincode"
-                app:layout_constraintStart_toStartOf="@+id/textView24"
-                app:layout_constraintTop_toBottomOf="@+id/textView24" />
+                app:layout_constraintStart_toStartOf="@+id/landmarkTextView"
+                app:layout_constraintTop_toBottomOf="@+id/landmarkTextView" />
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/stateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="state_name"
-                app:layout_constraintStart_toStartOf="@+id/textView25"
-                app:layout_constraintTop_toBottomOf="@+id/textView25" />
+                app:layout_constraintStart_toStartOf="@+id/cityTextView0"
+                app:layout_constraintTop_toBottomOf="@+id/cityTextView0" />
 
             <TextView
                 android:id="@+id/textView27"
@@ -278,7 +278,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView26" />
+                app:layout_constraintTop_toBottomOf="@+id/stateTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

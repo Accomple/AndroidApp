@@ -70,6 +70,7 @@ public class AccommodationListAdapter extends RecyclerView.Adapter<Accommodation
                     Intent intent = new Intent(context,BuildingDetailActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("id",id);
+                    intent.putExtra("starting_rent",startingRent);
                     context.startActivity(intent);
                 } catch (JSONException e){
 

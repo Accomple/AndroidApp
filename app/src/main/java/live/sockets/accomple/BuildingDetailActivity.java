@@ -1,5 +1,6 @@
 package live.sockets.accomple;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,10 +13,12 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -37,11 +40,19 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
     private ImageView backImageView;
     private ImageView toggleAboutImageView;
     private RecyclerView photoRecyclerView;
+    private RecyclerView perksRecyclerView;
+    private RecyclerView roomsRecyclerView;
     private LinearLayout layoutToolbar;
     private MapView mapView;
     private TextView genderTextView;
+    private TextView startingRentTextView;
     private TextView titleTextView;
     private TextView aboutTextView;
+    private TextView streetTextView;
+    private TextView areaTextView0;
+    private TextView landmarkTextView;
+    private TextView cityTextView0;
+    private TextView stateTextView;
 
     private GoogleMap map;
     private final String TAG = "Debug";
@@ -50,7 +61,9 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
     private final int FEMALE_SHADE = Color.parseColor("#F05A78");
     private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC3Z1BJHsA3nuLp2ttSbZwrZmAPDJnZcBM";
     private boolean toggledAbout = false;
+    private boolean is_bookmarked = false;
     private String id;
+    private int starting_rent;
     private String token;
 
     @Override
@@ -63,8 +76,15 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
         titleTextView = findViewById(R.id.titleTextView);
         favouriteImageView = findViewById(R.id.favouriteImageView);
         photoRecyclerView = findViewById(R.id.photoRecyclerView);
+        roomsRecyclerView = findViewById(R.id.roomsRecyclerView);
+        perksRecyclerView = findViewById(R.id.perksRecyclerView);
+        streetTextView = findViewById(R.id.streetTextView);
+        areaTextView0 = findViewById(R.id.areaTextView0);
+        landmarkTextView = findViewById(R.id.landmarkTextView);
+        cityTextView0 = findViewById(R.id.cityTextView0);
+        stateTextView = findViewById(R.id.stateTextView);
         aboutTextView = findViewById(R.id.aboutTextView);
-
+        startingRentTextView = findViewById(R.id.startingRentTextView);
         backImageView = findViewById(R.id.backImageView);
         toggleAboutImageView = findViewById(R.id.toggleAboutImageView);
         token = Shared.storage.getString("token","EMPTY");
@@ -85,9 +105,12 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
         mapView.getMapAsync(this);
 
         id = getIntent().getStringExtra("id");
-        Log.d(TAG, id);
+        starting_rent = getIntent().getIntExtra("starting_rent",7299);
 
         photoRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+        roomsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        perksRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
 
         requestAndRender();
 
@@ -151,7 +174,52 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
     private void addEventListeners(){
 
         favouriteImageView.setOnLongClickListener(v -> {
-            favouriteImageView.setImageResource(R.drawable.favorite_filled);
+            is_bookmarked = !is_bookmarked;
+            if (is_bookmarked) {
+                favouriteImageView.setImageResource(R.drawable.favorite_filled);
+                StringRequest addBookmarkRequest = new StringRequest(
+                        Request.Method.POST,
+                        Shared.ROOT_URL+"/accounts/bookmark/add/building_id="+id+"/",
+                        response -> {
+                            Toast.makeText(this, "Added Bookmark", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, response);
+                        },
+                        error -> {
+                            Log.d(TAG, error.toString());
+                            Toast.makeText(this,"Something Went Wrong", Toast.LENGTH_LONG).show();
+                        }
+                ){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String>  params = new HashMap<>();
+                        params.put("Authorization", "Token "+token);
+                        return params;
+                    }
+                };
+                Shared.requestQueue.add(addBookmarkRequest);
+            } else {
+                favouriteImageView.setImageResource(R.drawable.favorite_bordered);
+                StringRequest removeBookmarkRequest = new StringRequest(
+                        Request.Method.DELETE,
+                        Shared.ROOT_URL+"/accounts/bookmark/delete/building_id="+id+"/",
+                        response -> {
+                            Toast.makeText(this, "Removed Bookmark", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, response);
+                        },
+                        error -> {
+                            Log.d(TAG, error.toString());
+                            Toast.makeText(this,"Something Went Wrong", Toast.LENGTH_LONG).show();
+                        }
+                ){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String>  params = new HashMap<>();
+                        params.put("Authorization", "Token "+token);
+                        return params;
+                    }
+                };
+                Shared.requestQueue.add(removeBookmarkRequest);
+            }
             return true;
         });
 
@@ -187,6 +255,7 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
                 genderTextView.setText("UNI RESIDENCE");
         }
     }
+
     private void requestAndRender(){
 
         StringRequest detailRequest = new StringRequest(
@@ -197,20 +266,47 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
                     JsonObject jsonObject = new Gson().fromJson(response,JsonObject.class);
                     JsonArray photoObjects = jsonObject.getAsJsonArray("photos");
                     JsonArray photoUrls = new JsonArray();
+                    JsonArray rooms = new JsonArray();
+                    JsonArray perks;
 
                     photoUrls.add(jsonObject.get("display_pic").getAsString());
                     for(JsonElement element : photoObjects){
                         JsonObject object = element.getAsJsonObject();
                         photoUrls.add(object.get("photo").getAsString());
                     }
+                    for(JsonElement element : jsonObject.get("rooms").getAsJsonArray()){
+                        JsonObject object = element.getAsJsonObject();
+                        if(object.get("available").getAsInt() > 0)
+                            rooms.add(object);
+                    }
+                    perks = jsonObject.getAsJsonArray("perks");
                     double lat = jsonObject.get("latitude").getAsDouble();
                     double lng = jsonObject.get("longitude").getAsDouble();
+                    is_bookmarked = jsonObject.get("is_bookmarked").getAsBoolean();
                     String gender_label = jsonObject.get("gender_label").getAsString();
                     String building_name = jsonObject.get("building_name").getAsString();
+                    String street = jsonObject.get("street").getAsString();
+                    String area = jsonObject.get("area").getAsString();
+                    String city = jsonObject.get("city").getAsString();
+                    String state = jsonObject.get("state").getAsString();
+                    String zip_code = jsonObject.get("zip_code").getAsString();
+                    String landmark = jsonObject.get("landmark").getAsString();
 
                     setShade(gender_label);
                     titleTextView.setText(building_name);
+                    if(is_bookmarked)
+                        favouriteImageView.setImageResource(R.drawable.favorite_filled);
+                    else
+                        favouriteImageView.setImageResource(R.drawable.favorite_bordered);
+                    startingRentTextView.setText("₹ "+starting_rent+" ");
                     photoRecyclerView.setAdapter(new PhotosAdapter(getApplicationContext(),photoUrls));
+                    roomsRecyclerView.setAdapter(new RoomAdapter(getApplicationContext(),rooms));
+                    perksRecyclerView.setAdapter(new PerkAdapter(getApplicationContext(),perks));
+                    streetTextView.setText(street+",");
+                    areaTextView0.setText(area+",");
+                    landmarkTextView.setText("Near "+landmark+",");
+                    cityTextView0.setText(city+", "+zip_code+",");
+                    stateTextView.setText(state);
                     map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(building_name));
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 11));
 
@@ -218,7 +314,7 @@ public class BuildingDetailActivity extends AppCompatActivity implements OnMapRe
                 error -> Log.d(TAG, error.toString())
         ){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders(){
                 Map<String, String>  params = new HashMap<>();
                 if(!token.equalsIgnoreCase("EMPTY"))
                     params.put("Authorization", "Token "+token);

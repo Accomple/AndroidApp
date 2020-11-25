@@ -1,6 +1,7 @@
 package live.sockets.accomple;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +73,12 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.Acco
             Glide.with(holder.imageView.getContext()).load(Shared.ROOT_URL + accommodation.getString("display_pic")).into(holder.imageView);
             holder.itemView.setOnClickListener(v -> {
                 try {
-                    Toast.makeText(context, accommodation.getString("id"), Toast.LENGTH_SHORT).show();
-
+                    String id = accommodation.getString("id");
+                    Intent intent = new Intent(context,BuildingDetailActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("id",id);
+                    intent.putExtra("starting_rent",startingRent);
+                    context.startActivity(intent);
                 } catch (JSONException e){
 
                 }
