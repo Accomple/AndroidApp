@@ -45,6 +45,7 @@ public class VerificationActivity extends AppCompatActivity {
     private int currentDigit;
     private final int MAX_DIGITS = 6;
     private CountDownTimer timer;
+    private boolean sendOnCreate;
     private String otp;
 
     @Override
@@ -70,6 +71,12 @@ public class VerificationActivity extends AppCompatActivity {
         instructionTextView.setText(null);
         submitButton.setEnabled(false);
         messageTextView.setText(null);
+        try {
+            sendOnCreate = getIntent().getBooleanExtra("sendOnCreate", true);
+        } catch (Exception e){
+            Log.d(TAG, e.toString());
+            sendOnCreate = true;
+        }
 
         addEventListeners();
 
@@ -230,7 +237,8 @@ public class VerificationActivity extends AppCompatActivity {
                     JsonObject jsonObject = new Gson().fromJson(response,JsonObject.class);
                     String email = jsonObject.get("email").getAsString();
                     instructionTextView.setText("Passcode sent to "+email);
-                    resend();
+                    if(sendOnCreate)
+                        resend();
                 },
                 error -> Toast.makeText(this,"Something Went Wrong!", Toast.LENGTH_LONG).show()
         ){

@@ -31,6 +31,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     JsonArray rooms;
     Context context;
     String token = "EMPTY";
+    boolean is_verified = false;
     Map<Integer,Integer> imageMap = new HashMap<>();
     private final String TAG = "Debug";
 
@@ -38,6 +39,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         this.rooms = rooms;
         this.context = context;
         this.token  = Shared.storage.getString("token","EMPTY");
+        this.is_verified = Shared.storage.getBoolean("is_verified",false);
 
         imageMap.put(1,R.drawable.bed_icon_601);
         imageMap.put(2,R.drawable.bed_icon_602);
@@ -75,13 +77,20 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } else {
-                new AlertDialog.Builder(v.getRootView().getContext())
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setTitle("Confirm Booking")
-                        .setMessage("This will share your details with the Room Owner")
-                        .setPositiveButton("Proceed", (dialog, which) -> sendBookingRequest(id))
-                        .setNegativeButton("Go Back", null)
-                        .show();
+                if(is_verified){
+                    new AlertDialog.Builder(v.getRootView().getContext())
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setTitle("Confirm Booking")
+                            .setMessage("This will share your details with the Room Owner")
+                            .setPositiveButton("Proceed", (dialog, which) -> sendBookingRequest(id))
+                            .setNegativeButton("Go Back", null)
+                            .show();
+                } else {
+                    Intent intent = new Intent(context,AccountActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Toast.makeText(context,"Account verification needed for Booking",Toast.LENGTH_LONG).show();
+                    context.startActivity(intent);
+                }
             }
         });
     }
