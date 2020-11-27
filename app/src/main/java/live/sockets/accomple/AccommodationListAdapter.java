@@ -1,7 +1,7 @@
 package live.sockets.accomple;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class AccommodationListAdapter extends RecyclerView.Adapter<AccommodationListAdapter.AccommodationViewHolder> {
@@ -68,8 +66,11 @@ public class AccommodationListAdapter extends RecyclerView.Adapter<Accommodation
             Glide.with(holder.imageView.getContext()).load(Shared.ROOT_URL + accommodation.getString("display_pic")).into(holder.imageView);
             holder.itemView.setOnClickListener(v -> {
                 try {
-                    Toast.makeText(context, accommodation.getString("id"), Toast.LENGTH_SHORT).show();
-
+                    String id = accommodation.getString("id");
+                    Intent intent = new Intent(context,BuildingDetailActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("id",id);
+                    context.startActivity(intent);
                 } catch (JSONException e){
 
                 }
@@ -96,7 +97,7 @@ public class AccommodationListAdapter extends RecyclerView.Adapter<Accommodation
 
         public AccommodationViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.buildingImageView);
             genderLabelImageView = itemView.findViewById(R.id.genderLabelImageView);
             buildingNameTextView = itemView.findViewById(R.id.bulidingNameTextView);
             areaTextView = itemView.findViewById(R.id.areaTextView);

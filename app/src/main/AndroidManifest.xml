@@ -3,8 +3,10 @@
     package="live.sockets.accomple">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 
     <application
         android:allowBackup="true"
@@ -14,7 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Accomple"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AccountActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC3Z1BJHsA3nuLp2ttSbZwrZmAPDJnZcBM" />
+        <activity android:name=".WebViewActivity"></activity>
+        <activity android:name=".BuildingDetailActivity" />
+        <activity android:name=".VerificationActivity" />
+        <activity android:name=".UpdatePasswordActivity" />
+        <activity android:name=".BookingActivity" />
+        <activity android:name=".BookmarkActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".AccountActivity" />
+        <activity android:name=".RegisterActivity"/>
         <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +38,9 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".TestActivity" />
+        <activity android:name=".TermsActivity" />
+        <activity android:name=".ContactActivity" />
     </application>
 
 </manifest>

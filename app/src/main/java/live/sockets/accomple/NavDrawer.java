@@ -28,13 +28,36 @@ public abstract class NavDrawer {
     protected static NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener(){
         return item -> {
             clearSelection(navigationView.getMenu());
-
+            Intent intent;
             switch (item.getItemId()) {
                 case R.id.accommodations:
                     Log.d(TAG, "accommodations");
-                    Intent intent = new Intent(parent, MainActivity.class);
+                    intent = new Intent(parent, MainActivity.class);
                     parent.startActivity(intent);
                 break;
+
+                case R.id.booking:
+                    Log.d(TAG, "booking");
+                    String token = Shared.storage.getString("token","EMPTY");
+                    if(token.equalsIgnoreCase("EMPTY"))
+                        intent = new Intent(parent, LoginActivity.class);
+                    else
+                        intent = new Intent(parent, BookingActivity.class);
+                    parent.startActivity(intent);
+                break;
+
+                case R.id.terms:
+                    Log.d(TAG, "termsandconditions");
+                    intent = new Intent(parent, TermsActivity.class);
+                    parent.startActivity(intent);
+                 break;
+
+                case R.id.contactUS:
+                    Log.d(TAG, "contactUs");
+                    intent = new Intent(parent, ContactActivity.class);
+                    parent.startActivity(intent);
+                    break;
+
             }
             return true;
         };
@@ -65,6 +88,26 @@ public abstract class NavDrawer {
                 intent = new Intent(parent, AccountActivity.class);
 
             parent.startActivity(intent);
+        };
+    }
+
+    protected static View.OnClickListener onVerificationStatusClicked(){
+        return v -> {
+            clearSelection(navigationView.getMenu());
+            String token = Shared.storage.getString("token","EMPTY");
+            boolean is_verified = Shared.storage.getBoolean("is_verified",false);
+            if (token.equalsIgnoreCase("EMPTY")){
+                Intent intent = new Intent(parent, LoginActivity.class);
+                parent.startActivity(intent);
+            } else {
+                if(is_verified){
+                    Toast.makeText(parent,"Verified",Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(parent, VerificationActivity.class);
+                    parent.startActivity(intent);
+                }
+            }
+
         };
     }
 }
