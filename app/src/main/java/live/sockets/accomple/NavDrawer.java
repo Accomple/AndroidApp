@@ -34,7 +34,7 @@ public abstract class NavDrawer {
                     Log.d(TAG, "accommodations");
                     intent = new Intent(parent, MainActivity.class);
                     parent.startActivity(intent);
-                break;
+                    break;
 
                 case R.id.booking:
                     Log.d(TAG, "booking");
@@ -44,7 +44,20 @@ public abstract class NavDrawer {
                     else
                         intent = new Intent(parent, BookingActivity.class);
                     parent.startActivity(intent);
-                break;
+                    break;
+
+                case R.id.terms:
+                    Log.d(TAG, "termsandconditions");
+                    intent = new Intent(parent, TermsActivity.class);
+                    parent.startActivity(intent);
+                    break;
+
+                case R.id.contactUS:
+                    Log.d(TAG, "contactUs");
+                    intent = new Intent(parent, ContactActivity.class);
+                    parent.startActivity(intent);
+                    break;
+
             }
             return true;
         };
