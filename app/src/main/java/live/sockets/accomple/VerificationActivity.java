@@ -228,6 +228,21 @@ public class VerificationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            if (sendOnCreate) {
+                finish();
+            } else  {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
     private void requestAndRender(){
         StringRequest statusRequest = new StringRequest(
                 Request.Method.GET,
