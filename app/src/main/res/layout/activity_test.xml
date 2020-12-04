@@ -60,11 +60,12 @@
                     android:id="@+id/imageView6"
                     android:layout_width="249dp"
                     android:layout_height="54dp"
+                    android:paddingTop="7dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintStart_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/logo" />
+                    app:srcCompat="@drawable/accomple_logo_white" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

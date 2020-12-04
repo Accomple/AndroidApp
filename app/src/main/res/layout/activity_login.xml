@@ -47,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/skipLink"
-            app:srcCompat="@drawable/logo" />
+            app:srcCompat="@drawable/accomple_logo_purple" />
 
         <EditText
             android:id="@+id/passwordField"
@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Login"
+            android:backgroundTint="@color/primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordField" />
